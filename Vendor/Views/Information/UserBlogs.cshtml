@@ -1,0 +1,103 @@
+﻿@model List<Vendor.Models.BlogModel>
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "Blogs";
+}
+
+<style>
+    body {
+        background-color: #f8f9fa;
+    }
+
+    .blog-container {
+        max-width: 1200px;
+        margin: auto;
+    }
+
+    .blog-card {
+        transition: 0.3s ease-in-out;
+        border-radius: 12px;
+        overflow: hidden;
+        border: none;
+    }
+
+        .blog-card:hover {
+            transform: scale(1.03);
+            box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.1);
+        }
+
+    .blog-title {
+        color: #333;
+        font-weight: bold;
+    }
+
+    .blog-meta {
+        font-size: 14px;
+        color: #6c757d;
+    }
+
+    .blog-description {
+        color: #555;
+        font-size: 15px;
+    }
+
+    .search-bar {
+        max-width: 500px;
+        margin: auto;
+    }
+
+    .pagination .page-item.active .page-link {
+        background-color: #89c74a;
+        border-color: #89c74a;
+    }
+
+    .pagination .page-link {
+        color: #89c74a;
+    }
+</style>
+
+<div class="container blog-container mt-5">
+    <h2 class="text-center mb-4" style="color: #89c74a;">🌿 Explore Our Blogs</h2>
+
+    <div class="search-bar text-center mb-4">
+        <form action="@Url.Action("UserBlogs", "Information")" method="get">
+            <div class="input-group">
+                <input type="text" class="form-control" name="search" placeholder="Search blogs..." value="@ViewBag.SearchQuery">
+                <button class="btn btn-success" type="submit">🔍 Search</button>
+            </div>
+        </form>
+    </div>
+
+    <div class="row row-cols-1 row-cols-md-3 g-4">
+        @foreach (var blog in Model)
+        {
+            <div class="col">
+                <div class="card blog-card shadow">
+                    <div class="card-body">
+                        <h5 class="blog-title">@blog.BlogTitle</h5>
+                        <p class="blog-meta">✍ By @blog.BlogAutherName | 📅 @blog.BlogDate</p>
+
+                        <!-- Properly display short blog content without breaking HTML -->
+                        <p class="blog-description">
+                            @Html.Raw(blog.BlogDescription.Length > 100 ? blog.BlogDescription.Substring(0, blog.BlogDescription.IndexOf(" ", 100)) + "..." : blog.BlogDescription)
+                        </p>
+
+                        <a href="@Url.Action("BlogDetails", "Information", new { id = blog.BlogId })" class="btn btn-sm" style="background-color: #89c74a; color: white;">📖 Read More</a>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+
+    <div class="text-center mt-4">
+        <ul class="pagination justify-content-center">
+            @for (int i = 1; i <= ViewBag.TotalPages; i++)
+            {
+                <li class="page-item @(i == ViewBag.Page ? "active" : "")">
+                    <a class="page-link" href="@Url.Action("UserBlogs", new { page = i, search = ViewBag.SearchQuery })">@i</a>
+                </li>
+            }
+        </ul>
+    </div>
+</div>

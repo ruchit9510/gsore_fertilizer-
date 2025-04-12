@@ -1,0 +1,253 @@
+﻿@{
+    Layout = null;
+    var users = ViewBag.Users as List<Vendor.Models.SignupLogin>;
+    var vendors = ViewBag.Vendors as List<Vendor.Models.AdminLogin>;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Admin Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .password-input-group {
+            position: relative;
+        }
+
+        .password-toggle {
+            cursor: pointer;
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-4">
+        <h1>Admin Dashboard</h1>
+        <hr />
+
+        <!-- Vendors Section -->
+        <div class="card mb-4">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5 class="card-title">Manage Vendors</h5>
+                <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addVendorModal">Add Vendor</button>
+            </div>
+            <div class="card-body">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Email</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var vendor in vendors)
+                        {
+                            <tr>
+                                <td>@vendor.adminid</td>
+                                <td>@vendor.Email</td>
+                                <td>
+                                    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editVendorModal-@vendor.adminid">Edit</button>
+                                    <button class="btn btn-danger" onclick="confirmDeleteVendor(@vendor.adminid)">Delete</button>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Users Section -->
+        <div class="card mb-4">
+            <div class="card-header">
+                <h5 class="card-title">Manage Users</h5>
+            </div>
+            <div class="card-body">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var user in users)
+                        {
+                            <tr>
+                                <td>@user.userid</td>
+                                <td>@user.Name</td>
+                                <td>@user.Email</td>
+                                <td>
+                                    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editUserModal-@user.userid">Edit</button>
+                                    <button class="btn btn-danger" onclick="confirmDeleteUser(@user.userid)">Delete</button>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Add Vendor Modal -->
+        <div class="modal fade" id="addVendorModal" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Add New Vendor</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form action="/SuperAdmin/AddVendor" method="post">
+                            <div class="mb-3">
+                                <label>Email</label>
+                                <input type="email" name="Email" class="form-control" required>
+                            </div>
+                            <div class="mb-3 password-input-group">
+                                <label>Password</label>
+                                <input type="password" name="Password" class="form-control" required>
+                                <i class="fas fa-eye password-toggle" onclick="togglePassword(this)"></i>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Add Vendor</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Edit Modals -->
+        @foreach (var vendor in vendors)
+        {
+            <div class="modal fade" id="editVendorModal-@vendor.adminid" tabindex="-1" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-body">
+                            <form action="/SuperAdmin/EditVendor" method="post">
+                                <input type="hidden" name="adminid" value="@vendor.adminid" />
+                                <div class="mb-3">
+                                    <label>Email</label>
+                                    <input type="email" name="Email" value="@vendor.Email" class="form-control" required>
+                                </div>
+                                <div class="mb-3 password-input-group">
+                                    <label>Password</label>
+                                    <input type="password" name="Password" value="@vendor.Password" class="form-control" required>
+                                    <i class="fas fa-eye password-toggle" onclick="togglePassword(this)"></i>
+                                </div>
+                                <button type="submit" class="btn btn-primary">Save Changes</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+
+        @foreach (var user in users)
+        {
+            <div class="modal fade" id="editUserModal-@user.userid" tabindex="-1" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-body">
+                            <form action="/SuperAdmin/EditUser" method="post">
+                                <input type="hidden" name="userid" value="@user.userid" />
+                                <div class="mb-3">
+                                    <label>Name</label>
+                                    <input type="text" name="Name" value="@user.Name" class="form-control" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label>Email</label>
+                                    <input type="email" name="Email" value="@user.Email" class="form-control" required>
+                                </div>
+                                <div class="mb-3 password-input-group">
+                                    <label>Password</label>
+                                    <input type="password" name="Password" value="@user.Password" class="form-control" required>
+                                    <i class="fas fa-eye password-toggle" onclick="togglePassword(this)"></i>
+                                </div>
+                                <button type="submit" class="btn btn-primary">Save Changes</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+
+        <!-- Delete Vendor Confirmation Modal -->
+        <div class="modal fade" id="deleteVendorModal" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Delete Vendor</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p>Are you sure you want to delete this vendor?</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+                        <form id="deleteVendorForm" method="post" action="/SuperAdmin/DeleteVendor">
+                            <input type="hidden" name="adminid" id="deleteVendorId" />
+                            <button type="submit" class="btn btn-danger">Yes</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Delete User Confirmation Modal -->
+        <div class="modal fade" id="deleteUserModal" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Delete User</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p>Are you sure you want to delete this user?</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+                        <form id="deleteUserForm" method="post" action="/SuperAdmin/DeleteUser">
+                            <input type="hidden" name="userid" id="deleteUserId" />
+                            <button type="submit" class="btn btn-danger">Yes</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Toggle password visibility
+        function togglePassword(icon) {
+            const passwordInput = icon.previousElementSibling;
+            if (passwordInput.type === "password") {
+                passwordInput.type = "text";
+                icon.classList.remove("fa-eye");
+                icon.classList.add("fa-eye-slash");
+            } else {
+                passwordInput.type = "password";
+                icon.classList.remove("fa-eye-slash");
+                icon.classList.add("fa-eye");
+            }
+        }
+
+        // Vendor Delete Confirmation
+        function confirmDeleteVendor(adminid) {
+            document.getElementById('deleteVendorId').value = adminid;
+            new bootstrap.Modal(document.getElementById('deleteVendorModal')).show();
+        }
+
+        // User Delete Confirmation
+        function confirmDeleteUser(userid) {
+            document.getElementById('deleteUserId').value = userid;
+            new bootstrap.Modal(document.getElementById('deleteUserModal')).show();
+        }
+    </script>
+</body>
+</html>

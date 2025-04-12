@@ -1,0 +1,83 @@
+﻿@model Vendor.Models.BlogModel
+@{
+    Layout = "~/Views/Shared/_LayoutAdminPage.cshtml";
+    ViewBag.Title = "Add Blog";
+}
+
+<div class="content-wrapper">
+    <section class="content-header">
+        <h1>
+            Blog Management
+            <small>Create New Blog</small>
+        </h1>
+        <ol class="breadcrumb">
+            <li><a href="@Url.Action("Index", "Admin")"><i class="fa fa-dashboard"></i> Home</a></li>
+            <li><a href="@Url.Action("BlogList", "Information")">Blogs</a></li>
+            <li class="active">Create</li>
+        </ol>
+    </section>
+
+    <section class="content">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box box-primary">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">Create New Blog Post</h3>
+                    </div>
+
+                    @using (Html.BeginForm("AddAdminBlog", "Information", FormMethod.Post, new { role = "form" }))
+                    {
+                        @Html.AntiForgeryToken()
+
+                        <div class="box-body">
+                            <div class="form-group">
+                                @Html.LabelFor(m => m.BlogTitle)
+                                @Html.TextBoxFor(m => m.BlogTitle, new { @class = "form-control", placeholder = "Enter blog title" })
+                                @Html.ValidationMessageFor(m => m.BlogTitle)
+                            </div>
+
+                            <div class="form-group">
+                                @Html.LabelFor(m => m.BlogAutherName)
+                                @Html.TextBoxFor(m => m.BlogAutherName, new { @class = "form-control", placeholder = "Enter author name" })
+                                @Html.ValidationMessageFor(m => m.BlogAutherName)
+                            </div>
+
+                            <div class="form-group">
+                                @Html.LabelFor(m => m.BlogDate)
+                                @Html.TextBoxFor(m => m.BlogDate, "{0:yyyy-MM-dd}", new { @class = "form-control", type = "date" })
+                                @Html.ValidationMessageFor(m => m.BlogDate)
+                            </div>
+
+                            <div class="form-group">
+                                @Html.LabelFor(m => m.BlogDescription)
+                                @Html.TextAreaFor(m => m.BlogDescription, new { @class = "form-control", id = "BlogDescription", rows = 5, placeholder = "Enter blog content" })
+                                @Html.ValidationMessageFor(m => m.BlogDescription)
+                            </div>
+                        </div>
+
+                        <div class="box-footer">
+                            <button type="submit" class="btn btn-primary">Create Blog</button>
+                            <a href="@Url.Action("BlogList", "Information")" class="btn btn-default">Cancel</a>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script src="https://cdn.ckeditor.com/4.21.0/standard/ckeditor.js"></script>
+    <script>
+        CKEDITOR.replace('BlogDescription');
+    </script>
+
+
+    <script>
+        tinymce.init({
+            selector: '#BlogDescription',
+            height: 300,
+            menubar: false,
+            plugins: 'advlist autolink lists link charmap print preview anchor',
+            toolbar: 'bold italic underline | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link',
+        });
+    </script>
+</div>

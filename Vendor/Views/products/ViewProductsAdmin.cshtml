@@ -1,0 +1,81 @@
+﻿@model IEnumerable<Vendor.Models.Products>
+
+@{
+    ViewBag.Title = "View Products Admin";
+    Layout = "~/Views/Shared/_LayoutAdminPage.cshtml";
+}
+
+<div class="content-wrapper">
+    <section class="content-header">
+        <h1 class="text-primary">
+            <i class="fa fa-cubes"></i> Product Management
+        </h1>
+        <ol class="breadcrumb">
+            <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+            <li><a href="#">Tables</a></li>
+            <li class="active">Product List</li>
+        </ol>
+    </section>
+
+    <section class="content">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="box box-primary">
+                    <div class="box-header with-border d-flex justify-content-between align-items-center">
+                        <h3 class="box-title"><i class="fa fa-list"></i> Products List</h3>
+                        <form method="get" action="@Url.Action("ViewProductsAdmin", "Products")" class="form-inline">
+                            <div class="form-group mx-sm-2">
+                                <input type="text" name="searchTerm" class="form-control" placeholder="Search by name..." value="@Request.QueryString["searchTerm"]" />
+                            </div>
+                            <div class="form-group mx-sm-2">
+                                @Html.DropDownList("CategoryId", (SelectList)ViewBag.Categories, "All Categories", new { @class = "form-control" })
+                            </div>
+                            <button type="submit" class="btn btn-primary"><i class="fa fa-search"></i> Filter</button>
+                            <a href="@Url.Action("ViewProductsAdmin", "Products")" class="btn btn-default ml-2">Reset</a>
+                        </form>
+                    </div>
+
+                    <div class="box-body table-responsive p-3">
+                        @if (!Model.Any())
+                        {
+                            <p class="text-center text-danger font-weight-bold">No products available.</p>
+                        }
+                        else
+                        {
+                            <table class="table table-bordered table-hover">
+                                <thead class="bg-primary text-white">
+                                    <tr>
+                                        <th>@Html.DisplayNameFor(model => model.First().ProductName)</th>
+                                        <th>@Html.DisplayNameFor(model => model.First().ProductPrice)</th>
+                                        <th>@Html.DisplayNameFor(model => model.First().ProductPicture)</th>
+                                        <th class="text-center">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var item in Model)
+                                    {
+                                        <tr>
+                                            <td>@Html.DisplayFor(modelItem => item.ProductName)</td>
+                                            <td><span class="badge badge-success">₹@Html.DisplayFor(modelItem => item.ProductPrice)</span></td>
+                                            <td class="text-center">
+                                                <img class="product__img img-fluid" style="width: 100px; height: 100px;" src="~/@Html.DisplayFor(modelItem => item.ProductPicture)" alt="Product Image">
+                                            </td>
+                                            <td class="text-center">
+                                                <a href="@Url.Action("EditProduct", new { id = item.id })" class="btn btn-sm btn-success"><i class="fa fa-edit"></i> Edit</a>
+                                                <a href="@Url.Action("Details", new { id = item.id })" class="btn btn-sm btn-info"><i class="fa fa-eye"></i> Details</a>
+                                                <a href="@Url.Action("Delete", new { id = item.id })" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure you want to delete this product?');">
+                                                    <i class="fa fa-trash"></i> Delete
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+p

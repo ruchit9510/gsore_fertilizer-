@@ -1,0 +1,74 @@
+﻿@model List<Vendor.Models.Products>
+@{
+    ViewBag.Title = "Products";
+}
+
+<div class="row">
+    <div class="col-md-8">
+        <input type="text" id="searchBox" class="form-control" placeholder="Search for products..." onkeyup="filterProducts()">
+    </div>
+    <div class="col-md-4">
+        <select id="categoryFilter" class="form-control" onchange="filterProducts()">
+            <option value="">All Categories</option>
+            @foreach (var category in ViewBag.Categories as List<Vendor.Models.Category>)
+            {
+                <option value="@category.CategoryId">@category.CategoryName</option>
+            }
+        </select>
+    </div>
+</div>
+
+<div class="row m-t-20">
+    <div class="col-12">
+        <div class="tab-content tab-animate-zoom">
+            <div class="tab-pane show active" id="fruits">
+                <div class="default-slider default-slider--hover-bg-red product-default-slider">
+                    <div class="product-default-slider-4grid-2rows gap__col--30 gap__row--40" id="productList">
+                        @foreach (var item in Model)
+                        {
+                            <div class="product__box product__default--single text-center"
+                                 data-name="@item.ProductName.ToLower()"
+                                 data-category-id="@item.CategoryId">
+                                <div class="product__img-box pos-relative">
+                                    <a href="#" class="product__img--link">
+                                        <img class="product__img img-fluid" src="~/@item.ProductPicture" alt="">
+                                    </a>
+                                    <ul class="product__action--link pos-absolute">
+                                        <li><a href="@Url.Action("addToCart", new { id = item.id })"><i class="icon-shopping-cart"></i></a></li>
+                                        <li><a href="#"><i class="icon-heart"></i></a></li>
+                                    </ul>
+                                </div>
+                                <div class="product__content m-t-20">
+                                    <a href="@Url.Action("addToCart", new { id = item.id })" class="product__link">@item.ProductName</a>
+                                    <div class="product__price m-t-5">
+                                        <span class="product__price">₹@item.ProductPrice</span>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function filterProducts() {
+        var searchQuery = document.getElementById("searchBox").value.toLowerCase();
+        var selectedCategory = document.getElementById("categoryFilter").value;
+        var products = document.querySelectorAll(".product__box");
+
+        products.forEach(function (product) {
+            var productName = product.getAttribute("data-name");
+            var productCategoryId = product.getAttribute("data-category-id");
+
+            if ((productName.includes(searchQuery) || searchQuery === "") &&
+                (selectedCategory === "" || productCategoryId === selectedCategory)) {
+                product.style.display = "block";
+            } else {
+                product.style.display = "none";
+            }
+        });
+    }
+</script>

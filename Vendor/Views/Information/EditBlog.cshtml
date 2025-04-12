@@ -1,0 +1,132 @@
+﻿@model Vendor.Models.BlogModel
+@{
+        Layout = "~/Views/Shared/_LayoutAdminPage.cshtml";
+        ViewBag.Title = "Edit Blog";
+}
+
+<div class="content-wrapper">
+    <!-- Content Header -->
+    <section class="content-header">
+        <h1>
+            Blog Management
+            <small>Edit Blog Post</small>
+        </h1>
+        <ol class="breadcrumb">
+            <li><a href="@Url.Action("Index", "Admin")"><i class="fa fa-dashboard"></i> Home</a></li>
+            <li><a href="@Url.Action("BlogList", "Information")">Blogs</a></li>
+            <li class="active">Edit</li>
+        </ol>
+    </section>
+
+    <!-- Main Content -->
+    <section class="content">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box box-primary">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">Edit Blog Post</h3>
+                    </div>
+
+                    @using (Html.BeginForm("EditBlog", "Information", FormMethod.Post, new { role = "form" }))
+                                        {
+                    @Html.AntiForgeryToken()
+                    @Html.HiddenFor(m => m.BlogId)
+
+                    <div class="box-body">
+                        <div class="form-group">
+                            @Html.LabelFor(m => m.BlogTitle, "Blog Title")
+                            @Html.TextBoxFor(m => m.BlogTitle, new { @class = "form-control", placeholder = "Enter blog title" })
+                            @Html.ValidationMessageFor(m => m.BlogTitle, "", new { @class = "text-danger" })
+                        </div>
+
+                        <div class="form-group">
+                            @Html.LabelFor(m => m.BlogAutherName, "Author Name")
+                            @Html.TextBoxFor(m => m.BlogAutherName, new { @class = "form-control", placeholder = "Enter author name" })
+                            @Html.ValidationMessageFor(m => m.BlogAutherName, "", new { @class = "text-danger" })
+                        </div>
+
+                        <div class="form-group">
+                            @Html.LabelFor(m => m.BlogDate, "Blog Date")
+                            @Html.TextBoxFor(m => m.BlogDate, new { @class = "form-control", type = "date" })
+                            @Html.ValidationMessageFor(m => m.BlogDate, "", new { @class = "text-danger" })
+                        </div>
+
+                        <div class="form-group">
+                            @Html.LabelFor(m => m.BlogDescription, "Blog Content")
+                            @Html.TextAreaFor(m => m.BlogDescription, new { @class = "form-control", rows = 10, id = "blogEditor" })
+                            @Html.ValidationMessageFor(m => m.BlogDescription, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="box-footer">
+                        <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Save Changes</button>
+                        <a href="@Url.Action("BlogList", "Information")" class="btn btn-default"><i class="fa fa-times"></i> Cancel</a>
+                    </div>
+                                        }
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
+<!-- jQuery (Needed for Validation) -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<!-- CKEditor Integration -->
+<script src="https://cdn.ckeditor.com/4.21.0/standard/ckeditor.js"></script>
+<script>
+    CKEDITOR.replace('blogEditor', {
+        height: 400,
+        removePlugins: 'elementspath',
+        toolbar: [
+            { name: 'clipboard', items: ['Undo', 'Redo'] },
+            { name: 'styles', items: ['Format', 'Font', 'FontSize'] },
+            { name: 'basicstyles', items: ['Bold', 'Italic', 'Underline', 'Strike', 'RemoveFormat'] },
+            { name: 'paragraph', items: ['NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', '-', 'Blockquote'] },
+            { name: 'links', items: ['Link', 'Unlink', 'Anchor'] },
+            { name: 'insert', items: ['Image', 'Table', 'HorizontalRule', 'SpecialChar'] },
+            { name: 'tools', items: ['Maximize'] }
+        ],
+        contentsCss: 'body { font-family:Arial,sans-serif; font-size:14px }'
+    });
+</script>
+
+<!-- Custom Styles -->
+<style>
+    .box-primary {
+        border-top-color: #3c8dbc;
+    }
+
+    .box-title {
+        font-weight: bold;
+        color: #3c8dbc;
+    }
+
+    .btn-primary {
+        background-color: #3c8dbc;
+        border-color: #367fa9;
+    }
+
+        .btn-primary:hover {
+            background-color: #367fa9;
+            border-color: #2c6da4;
+        }
+
+    .form-control {
+        border-radius: 5px;
+    }
+
+    .box-body .form-group {
+        margin-bottom: 20px;
+    }
+
+    .box-body label {
+        font-weight: 600;
+        color: #3c8dbc;
+    }
+
+    .text-danger {
+        color: red;
+        font-size: 14px;
+    }
+</style>
