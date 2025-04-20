@@ -37,8 +37,7 @@ namespace Vendor.Models
 
         public DateTime? DeliveryDate { get; set; }
 
-        public int? FkInvoiceID { get; set; }
-        [ForeignKey("FkInvoiceID")]
+        // Navigation property
         public virtual InvoiceModel Invoice { get; set; }
     }
 } 

@@ -20,5 +20,16 @@ namespace Vendor.Models
         public DbSet<Category> Categories { get; set; }
         
         public DbSet<DeliveryInfo> DeliveryInfos { get; set; }
+
+        protected override void OnModelCreating(DbModelBuilder modelBuilder)
+        {
+            // Configure the one-to-one relationship between InvoiceModel and DeliveryInfo
+            modelBuilder.Entity<InvoiceModel>()
+                .HasOptional(i => i.DeliveryInfo)
+                .WithRequired(d => d.Invoice)
+                .Map(m => m.MapKey("FkInvoiceID"));
+
+            base.OnModelCreating(modelBuilder);
+        }
     }
 }

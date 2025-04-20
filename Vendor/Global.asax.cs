@@ -1,5 +1,7 @@
 using System.Web.Mvc;
 using System.Web.Routing;
+using System.Web.Http;
+using System.Diagnostics;
 
 
 namespace Vendor
@@ -10,7 +12,9 @@ namespace Vendor
         {
             AreaRegistration.RegisterAllAreas();
             RouteConfig.RegisterRoutes(RouteTable.Routes);
-
+            
+            // Add a simple test to see if the application is properly configured
+            Debug.WriteLine("Application started successfully!");
         }
     }
 }
