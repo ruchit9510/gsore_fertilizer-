@@ -19,8 +19,5 @@ namespace Vendor.Models
 
         // Add this navigation property for Orders
         public virtual ICollection<Order> Orders { get; set; } = new List<Order>();
-        
-        // Add navigation property for DeliveryInfo
-        public virtual DeliveryInfo DeliveryInfo { get; set; }
     }
 }

@@ -1285,6 +1285,7 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\AdminController.cs" />
+    <Compile Include="Controllers\DeliveryController.cs" />
     <Compile Include="Controllers\HomePageTestController.cs" />
     <Compile Include="Controllers\InformationController.cs" />
     <Compile Include="Controllers\ProductsController.cs" />
@@ -1390,6 +1391,8 @@
     <Content Include="Views\products\OrderConfirmation.cshtml" />
     <Content Include="Views\products\OrderSuccess.cshtml" />
     <Content Include="Views\Information\ViewMessage.cshtml" />
+    <Content Include="Views\Delivery\Create.cshtml" />
+    <Content Include="Views\Delivery\Test.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
