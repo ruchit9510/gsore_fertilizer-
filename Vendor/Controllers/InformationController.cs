@@ -15,14 +15,28 @@ namespace Vendor.Controllers
         {
             return View();
         }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult ContactUs(ContactModel contact)
         {
-            db.contactModels.Add(contact);
-            db.SaveChanges();
-            return View();
+            if (ModelState.IsValid)
+            {
+                db.contactModels.Add(contact);
+                db.SaveChanges();
+
+                // Clear ModelState to reset form fields
+                ModelState.Clear();
+
+                // Optionally show a success message
+                ViewBag.Message = "Your message has been sent successfully!";
+
+                return View(new ContactModel()); // Return empty model
+            }
+
+            return View(contact); // If validation fails, return with input values
         }
+
         public ActionResult MessageList()
         {
             var adminInCookie = Request.Cookies["AdminInfo"];
@@ -46,6 +60,30 @@ namespace Vendor.Controllers
                 }
             }
         }
+
+        [HttpPost]
+        public JsonResult DeleteMessage(int id)
+        {
+            var message = db.contactModels.Find(id);
+            if (message != null)
+            {
+                db.contactModels.Remove(message);
+                db.SaveChanges();
+                return Json(new { success = true });
+            }
+            return Json(new { success = false });
+        }
+
+        public ActionResult ViewMessage(int id)
+        {
+            var message = db.contactModels.FirstOrDefault(x => x.contactId == id);
+            if (message == null)
+            {
+                return HttpNotFound();
+            }
+            return View(message);
+        }
+
         public ActionResult AboutUs()
         {
 

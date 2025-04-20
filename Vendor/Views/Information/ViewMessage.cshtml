@@ -1,0 +1,35 @@
+﻿@model Vendor.Models.ContactModel
+
+@{
+    ViewBag.Title = "Message Details";
+    Layout = "~/Views/Shared/_LayoutAdminPage.cshtml";
+}
+
+<div class="content-wrapper">
+    <section class="content-header">
+        <h1>Message Details</h1>
+    </section>
+
+    <section class="content">
+        <div class="box box-info">
+            <div class="box-body">
+                <dl class="dl-horizontal">
+                    <dt>Name</dt>
+                    <dd>@Model.Name</dd>
+
+                    <dt>Email</dt>
+                    <dd>@Model.Email</dd>
+
+                    <dt>Subject</dt>
+                    <dd>@Model.Subject</dd>
+
+                    <dt>Message</dt>
+                    <dd>@Model.Message</dd>
+                </dl>
+            </div>
+            <div class="box-footer">
+                <a href="@Url.Action("MessageList")" class="btn btn-default">Back</a>
+            </div>
+        </div>
+    </section>
+</div>

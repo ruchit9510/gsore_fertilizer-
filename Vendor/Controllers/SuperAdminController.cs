@@ -108,6 +108,7 @@ namespace Vendor.Controllers
                     existingUser.Name = user.Name;
                     existingUser.Email = user.Email;
                     existingUser.Password = user.Password;
+                    existingUser.ConfirmPassword = user.Password;
                     db.SaveChanges();
                 }
             }

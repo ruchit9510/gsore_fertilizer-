@@ -1339,6 +1339,7 @@
     <Compile Include="Models\InvoiceModel.cs" />
     <Compile Include="Models\Order.cs" />
     <Compile Include="Models\Products.cs" />
+    <Compile Include="Models\ShippingInfo.cs" />
     <Compile Include="Models\SignupLogin.cs" />
     <Compile Include="Models\SuperAdminLogin.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -1384,6 +1385,7 @@
     <Content Include="Views\products\EditCartItem.cshtml" />
     <Content Include="Views\products\OrderConfirmation.cshtml" />
     <Content Include="Views\products\OrderSuccess.cshtml" />
+    <Content Include="Views\Information\ViewMessage.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
