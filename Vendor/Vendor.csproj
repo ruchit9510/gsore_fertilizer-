@@ -1329,6 +1329,10 @@
     <Compile Include="Migrations\202504060943373_invoice1.Designer.cs">
       <DependentUpon>202504060943373_invoice1.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202504201344130_running.cs" />
+    <Compile Include="Migrations\202504201344130_running.Designer.cs">
+      <DependentUpon>202504201344130_running.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AdminLogin.cs" />
     <Compile Include="Models\AppFoodDbContext.cs" />
@@ -1339,7 +1343,6 @@
     <Compile Include="Models\InvoiceModel.cs" />
     <Compile Include="Models\Order.cs" />
     <Compile Include="Models\Products.cs" />
-    <Compile Include="Models\ShippingInfo.cs" />
     <Compile Include="Models\SignupLogin.cs" />
     <Compile Include="Models\SuperAdminLogin.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -1423,6 +1426,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202504060943373_invoice1.resx">
       <DependentUpon>202504060943373_invoice1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202504201344130_running.resx">
+      <DependentUpon>202504201344130_running.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
