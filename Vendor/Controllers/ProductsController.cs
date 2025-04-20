@@ -282,7 +282,7 @@ namespace Vendor.Controllers
                     FKUserID = userId
                 };
 
-                db.invoiceModel.Add(invoice); // Corrected to InvoiceModels
+                db.invoiceModel.Add(invoice);
                 db.SaveChanges();
 
                 foreach (var item in cart)
@@ -296,14 +296,16 @@ namespace Vendor.Controllers
                         FkProdId = item.productId,
                         FkInvoiceID = invoice.ID
                     };
-                    db.orders.Add(order); // Corrected to Orders
+                    db.orders.Add(order);
                 }
 
                 db.SaveChanges();
 
                 TempData["cart"] = null;
                 TempData["SuccessMessage"] = "Order placed successfully!";
-                return RedirectToAction("OrderConfirmation", new { invoiceId = invoice.ID });
+                
+                // Redirect to delivery information page instead of order confirmation
+                return RedirectToAction("Create", "Delivery", new { invoiceId = invoice.ID });
             }
             catch (Exception ex)
             {
@@ -319,6 +321,7 @@ namespace Vendor.Controllers
             var invoice = db.invoiceModel
                 .Include(i => i.user)
                 .Include(i => i.Orders.Select(o => o.prodcts))
+                .Include(i => i.DeliveryInfo)
                 .FirstOrDefault(i => i.ID == invoiceId);
 
             if (invoice == null)
@@ -348,6 +351,27 @@ namespace Vendor.Controllers
                     FontFactory.GetFont("Arial", 12)
                 );
                 document.Add(details);
+
+                // Add delivery information if available
+                if (invoice.DeliveryInfo != null)
+                {
+                    document.Add(new Paragraph(" ")); // Empty line
+                    Paragraph deliveryInfo = new Paragraph(
+                        $"Delivery Information:\n" +
+                        $"Name: {invoice.DeliveryInfo.FullName}\n" +
+                        $"Phone: {invoice.DeliveryInfo.PhoneNumber}\n" +
+                        $"Address: {invoice.DeliveryInfo.StreetAddress}\n" +
+                        $"City: {invoice.DeliveryInfo.City}, {invoice.DeliveryInfo.State} {invoice.DeliveryInfo.PostalCode}",
+                        FontFactory.GetFont("Arial", 12)
+                    );
+                    document.Add(deliveryInfo);
+                    
+                    if (!string.IsNullOrEmpty(invoice.DeliveryInfo.AdditionalNotes))
+                    {
+                        document.Add(new Paragraph($"Additional Notes: {invoice.DeliveryInfo.AdditionalNotes}", 
+                            FontFactory.GetFont("Arial", 12)));
+                    }
+                }
 
                 document.Add(new Paragraph(" ")); // Empty line
 

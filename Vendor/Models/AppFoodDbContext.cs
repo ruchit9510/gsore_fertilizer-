@@ -18,6 +18,7 @@ namespace Vendor.Models
         public DbSet<SuperAdminLogin> SuperAdminLogins { get; set; }
 
         public DbSet<Category> Categories { get; set; }
-
+        
+        public DbSet<DeliveryInfo> DeliveryInfos { get; set; }
     }
 }

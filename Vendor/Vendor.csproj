@@ -1339,7 +1339,6 @@
     <Compile Include="Models\InvoiceModel.cs" />
     <Compile Include="Models\Order.cs" />
     <Compile Include="Models\Products.cs" />
-    <Compile Include="Models\ShippingInfo.cs" />
     <Compile Include="Models\SignupLogin.cs" />
     <Compile Include="Models\SuperAdminLogin.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

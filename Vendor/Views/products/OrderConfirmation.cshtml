@@ -31,6 +31,20 @@
                                 <p><strong>Total Amount:</strong> ₹@Model.Total_Bill</p>
                                 <p><strong>Customer:</strong> @Model.user.Name</p>
                             </div>
+                            @if (Model.DeliveryInfo != null)
+                            {
+                                <div class="col-md-6">
+                                    <h5>Delivery Information</h5>
+                                    <p><strong>Name:</strong> @Model.DeliveryInfo.FullName</p>
+                                    <p><strong>Phone:</strong> @Model.DeliveryInfo.PhoneNumber</p>
+                                    <p><strong>Address:</strong> @Model.DeliveryInfo.StreetAddress</p>
+                                    <p><strong>City:</strong> @Model.DeliveryInfo.City, @Model.DeliveryInfo.State @Model.DeliveryInfo.PostalCode</p>
+                                    @if (!string.IsNullOrEmpty(Model.DeliveryInfo.AdditionalNotes))
+                                    {
+                                        <p><strong>Additional Notes:</strong> @Model.DeliveryInfo.AdditionalNotes</p>
+                                    }
+                                </div>
+                            }
                         </div>
 
                         <div class="table-content table-responsive m-t-30">
