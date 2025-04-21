@@ -28,6 +28,15 @@
                         <div class="row">
                             <div class="col-md-6">
                                 <h5>Order Details</h5>
+                                <h4>Delivery Details</h4>
+                                <p><strong>Name:</strong> @Model.FullName</p>
+                                <p><strong>Mobile:</strong> @Model.MobileNumber</p>
+                                <p><strong>Address:</strong> @Model.DeliveryAddress</p>
+                                @if (!string.IsNullOrEmpty(Model.Landmark))
+                                {
+                                    <p><strong>Landmark:</strong> @Model.Landmark</p>
+                                }
+
                                 <p><strong>Total Amount:</strong> ₹@Model.Total_Bill</p>
                                 <p><strong>Customer:</strong> @Model.user.Name</p>
                             </div>

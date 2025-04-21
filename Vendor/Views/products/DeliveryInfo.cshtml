@@ -1,0 +1,77 @@
+﻿@model Vendor.Models.InvoiceModel
+
+@{
+    ViewBag.Title = "Delivery Information";
+}
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-6">
+            <div class="card shadow-lg p-4 rounded-4">
+                <h2 class="mb-4 text-center">Enter Delivery Information</h2>
+                @using (Html.BeginForm("SubmitDeliveryInfo", "Products", FormMethod.Post))
+                {
+                    @Html.HiddenFor(m => m.ID)
+
+                    <div class="form-group mb-3">
+                        @Html.LabelFor(m => m.FullName, new { @class = "form-label fw-bold" })
+                        @Html.TextBoxFor(m => m.FullName, new { @class = "form-control", required = "required", placeholder = "Enter your full name" })
+                    </div>
+
+                    <div class="form-group mb-3">
+                        @Html.LabelFor(m => m.MobileNumber, new { @class = "form-label fw-bold" })
+                        @Html.TextBoxFor(m => m.MobileNumber, new
+                        {
+                            @class = "form-control",
+                            type = "tel",
+                            required = "required",
+                            placeholder = "10-digit mobile number",
+                            oninput = "validateMobile(this)"
+                        })
+                        <small class="text-danger d-none" id="mobileError">Please enter a valid 10-digit mobile number.</small>
+                    </div>
+
+                    <div class="form-group mb-3">
+                        @Html.LabelFor(m => m.DeliveryAddress, new { @class = "form-label fw-bold" })
+                        @Html.TextAreaFor(m => m.DeliveryAddress, new { @class = "form-control", required = "required", rows = 3, placeholder = "Enter delivery address" })
+                    </div>
+
+                    <div class="form-group mb-4">
+                        @Html.LabelFor(m => m.Landmark, new { @class = "form-label fw-bold" })
+                        @Html.TextBoxFor(m => m.Landmark, new { @class = "form-control", placeholder = "Optional landmark" })
+                    </div>
+
+                    <div class="d-grid">
+                        <button type="submit" class="btn btn-primary btn-lg">Continue</button>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        function validateMobile(input) {
+            const value = input.value;
+            const errorLabel = document.getElementById('mobileError');
+
+            if (!/^\d{10}$/.test(value)) {
+                errorLabel.classList.remove('d-none');
+                input.classList.add('is-invalid');
+            } else {
+                errorLabel.classList.add('d-none');
+                input.classList.remove('is-invalid');
+            }
+        }
+
+        // Prevent form submit if mobile number is invalid
+        document.querySelector('form').addEventListener('submit', function (e) {
+            const mobileInput = document.querySelector('input[name="MobileNumber"]');
+            if (!/^\d{10}$/.test(mobileInput.value)) {
+                e.preventDefault();
+                validateMobile(mobileInput);
+            }
+        });
+    </script>
+}

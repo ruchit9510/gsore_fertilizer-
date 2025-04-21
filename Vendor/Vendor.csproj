@@ -1333,6 +1333,10 @@
     <Compile Include="Migrations\202504201344130_running.Designer.cs">
       <DependentUpon>202504201344130_running.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202504201854481_FixDeliveryInformationRelationship.cs" />
+    <Compile Include="Migrations\202504201854481_FixDeliveryInformationRelationship.Designer.cs">
+      <DependentUpon>202504201854481_FixDeliveryInformationRelationship.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AdminLogin.cs" />
     <Compile Include="Models\AppFoodDbContext.cs" />
@@ -1389,6 +1393,7 @@
     <Content Include="Views\products\OrderConfirmation.cshtml" />
     <Content Include="Views\products\OrderSuccess.cshtml" />
     <Content Include="Views\Information\ViewMessage.cshtml" />
+    <Content Include="Views\products\DeliveryInfo.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -1429,6 +1434,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202504201344130_running.resx">
       <DependentUpon>202504201344130_running.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202504201854481_FixDeliveryInformationRelationship.resx">
+      <DependentUpon>202504201854481_FixDeliveryInformationRelationship.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

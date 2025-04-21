@@ -303,7 +303,7 @@ namespace Vendor.Controllers
 
                 TempData["cart"] = null;
                 TempData["SuccessMessage"] = "Order placed successfully!";
-                return RedirectToAction("OrderConfirmation", new { invoiceId = invoice.ID });
+                return RedirectToAction("DeliveryInfo", new { invoiceId = invoice.ID });
             }
             catch (Exception ex)
             {
@@ -312,6 +312,31 @@ namespace Vendor.Controllers
                 return RedirectToAction("Checkout");
             }
         }
+
+        [HttpGet]
+        public ActionResult DeliveryInfo(int invoiceId)
+        {
+            var invoice = db.invoiceModel.Find(invoiceId);
+            return View(invoice); // This view will now include the invoice ID as a hidden field
+        }
+
+        [HttpPost]
+        public ActionResult SubmitDeliveryInfo(InvoiceModel updated)
+        {
+            var invoice = db.invoiceModel.Find(updated.ID);
+            if (invoice != null)
+            {
+                invoice.FullName = updated.FullName;
+                invoice.MobileNumber = updated.MobileNumber;
+                invoice.DeliveryAddress = updated.DeliveryAddress;
+                invoice.Landmark = updated.Landmark;
+
+                db.SaveChanges();
+                return RedirectToAction("OrderConfirmation", new { invoiceId = invoice.ID });
+            }
+            return RedirectToAction("Index");
+        }
+
 
         // New action to download invoice as PDF
         public ActionResult DownloadInvoice(int invoiceId)
@@ -347,6 +372,12 @@ namespace Vendor.Controllers
                     $"Total Amount: ₹{invoice.Total_Bill}",
                     FontFactory.GetFont("Arial", 12)
                 );
+                details.Add($"\nDelivery Name: {invoice.FullName}");
+                details.Add($"\nMobile: {invoice.MobileNumber}");
+                details.Add($"\nAddress: {invoice.DeliveryAddress}");
+                if (!string.IsNullOrWhiteSpace(invoice.Landmark))
+                    details.Add($"\nLandmark: {invoice.Landmark}");
+
                 document.Add(details);
 
                 document.Add(new Paragraph(" ")); // Empty line

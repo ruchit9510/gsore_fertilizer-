@@ -13,6 +13,12 @@ namespace Vendor.Models
         public DateTime? DateInvoice { get; set; }
         public float Total_Bill { get; set; }
 
+        public string FullName { get; set; }
+        public string MobileNumber { get; set; }
+        public string DeliveryAddress { get; set; }
+        public string Landmark { get; set; }
+
+
         public int? FKUserID { get; set; }
         [ForeignKey("FKUserID")]
         public virtual SignupLogin user { get; set; }

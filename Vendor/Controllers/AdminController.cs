@@ -181,6 +181,11 @@ namespace Vendor.Controllers
             var invoice = db.invoiceModel.Find(id);
             if (invoice != null)
             {
+                // First, delete related orders
+                var relatedOrders = db.orders.Where(o => o.FkInvoiceID == invoice.ID).ToList();
+                db.orders.RemoveRange(relatedOrders);
+
+                // Then delete the invoice
                 db.invoiceModel.Remove(invoice);
                 db.SaveChanges();
                 TempData["SuccessMessage"] = "Invoice deleted successfully.";
