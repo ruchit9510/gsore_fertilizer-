@@ -1337,6 +1337,10 @@
     <Compile Include="Migrations\202504201854481_FixDeliveryInformationRelationship.Designer.cs">
       <DependentUpon>202504201854481_FixDeliveryInformationRelationship.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202504221733165_changes_in_orders_list.cs" />
+    <Compile Include="Migrations\202504221733165_changes_in_orders_list.Designer.cs">
+      <DependentUpon>202504221733165_changes_in_orders_list.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AdminLogin.cs" />
     <Compile Include="Models\AppFoodDbContext.cs" />
@@ -1437,6 +1441,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202504201854481_FixDeliveryInformationRelationship.resx">
       <DependentUpon>202504201854481_FixDeliveryInformationRelationship.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202504221733165_changes_in_orders_list.resx">
+      <DependentUpon>202504221733165_changes_in_orders_list.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

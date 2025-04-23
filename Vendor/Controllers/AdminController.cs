@@ -86,7 +86,7 @@ namespace Vendor.Controllers
         }
 
         // List Orders with optional date filter
-        public ActionResult ListOfOrders(DateTime? startDate, DateTime? endDate)
+        public ActionResult ListOfOrders(DateTime? startDate, DateTime? endDate, string orderStatus = "Pending")
         {
             var adminInCookie = Request.Cookies["AdminInfo"];
             if (adminInCookie != null)
@@ -94,9 +94,20 @@ namespace Vendor.Controllers
                 float t = 0;
                 var orders = db.orders.AsQueryable();
 
+                // Apply date filters if provided
                 if (startDate.HasValue && endDate.HasValue)
                 {
                     orders = orders.Where(o => o.Order_Date >= startDate && o.Order_Date <= endDate);
+                }
+
+                // Apply status filter
+                if (orderStatus == "Accepted")
+                {
+                    orders = orders.Where(o => o.IsAccepted);
+                }
+                else if (orderStatus == "Pending")
+                {
+                    orders = orders.Where(o => !o.IsAccepted);
                 }
 
                 var orderList = orders.ToList();
@@ -107,6 +118,7 @@ namespace Vendor.Controllers
                 }
 
                 TempData["OrderTotal"] = t;
+                ViewBag.OrderStatus = orderStatus;
                 return View(orderList);
             }
             else
@@ -118,15 +130,16 @@ namespace Vendor.Controllers
             }
         }
 
-        // Accept Order (just deleting for now as per your request)
+        // Accept Order (update status instead of deleting)
         [HttpPost]
         public ActionResult AcceptOrder(int id)
         {
             var order = db.orders.Find(id);
             if (order != null)
             {
-                db.orders.Remove(order); // for real-world use: update status instead
+                order.IsAccepted = true;
                 db.SaveChanges();
+                TempData["SuccessMessage"] = "Order has been accepted successfully.";
             }
             return RedirectToAction("ListOfOrders");
         }
@@ -144,22 +157,39 @@ namespace Vendor.Controllers
             return RedirectToAction("ListOfOrders");
         }
 
-        public ActionResult ListOfInvoices()
+        public ActionResult ListOfInvoices(DateTime? startDate, DateTime? endDate, string searchTerm)
         {
             var adminInCookie = Request.Cookies["AdminInfo"];
             if (adminInCookie != null)
             {
                 float t = 0;
-                List<InvoiceModel> invoice = db.invoiceModel.ToList<InvoiceModel>();
+                var invoices = db.invoiceModel.AsQueryable();
 
-                foreach (var item in invoice)
+                // Apply date filters if provided
+                if (startDate.HasValue && endDate.HasValue)
+                {
+                    invoices = invoices.Where(i => i.DateInvoice >= startDate && i.DateInvoice <= endDate);
+                }
+
+                // Apply search filter if provided
+                if (!string.IsNullOrEmpty(searchTerm))
+                {
+                    invoices = invoices.Where(i =>
+                        i.FullName.Contains(searchTerm) ||
+                        i.MobileNumber.Contains(searchTerm) ||
+                        i.DeliveryAddress.Contains(searchTerm) ||
+                        i.ID.ToString().Contains(searchTerm)
+                    );
+                }
+
+                var invoiceList = invoices.ToList();
+
+                foreach (var item in invoiceList)
                 {
                     t += item.Total_Bill;
-
-
                 }
                 TempData["InvoiceTotal"] = t;
-                return View(invoice);
+                return View(invoiceList);
             }
             else
             {

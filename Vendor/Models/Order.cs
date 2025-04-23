@@ -12,6 +12,7 @@ namespace Vendor.Models
         public int Unit_Price { get; set; }
         public float Order_Bill { get; set; }
         public DateTime? Order_Date { get; set; }
+        public bool IsAccepted { get; set; } = false; // Default to false
 
         public int? FkProdId { get; set; }
         [ForeignKey("FkProdId")]
@@ -20,7 +21,5 @@ namespace Vendor.Models
         public int? FkInvoiceID { get; set; }
         [ForeignKey("FkInvoiceID")]
         public virtual InvoiceModel invoices { get; set; }
-
-
     }
 }
