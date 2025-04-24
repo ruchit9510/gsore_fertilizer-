@@ -130,5 +130,30 @@ namespace Vendor.Controllers
             }
             return RedirectToAction("SuperAdminHome");
         }
+
+        [HttpPost]
+        public ActionResult AddUser(SignupLogin user)
+        {
+            //if (ModelState.IsValid)
+            //{
+                using (var db = new AppFoodDbContext())
+                {
+                    // Check if email already exists
+                    var isEmailExists = db.SignupLogin.Any(x => x.Email == user.Email);
+                    if (isEmailExists)
+                    {
+                        TempData["ErrorMessage"] = "Email already exists. Please use a different email.";
+                        return RedirectToAction("SuperAdminHome");
+                    }
+
+                    // Set ConfirmPassword to match Password
+                    user.ConfirmPassword = user.Password;
+                    db.SignupLogin.Add(user);
+                    db.SaveChanges();
+                    TempData["SuccessMessage"] = "User added successfully.";
+                }
+            //}
+            return RedirectToAction("SuperAdminHome");
+        }
     }
 }
